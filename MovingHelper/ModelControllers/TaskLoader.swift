@@ -41,7 +41,13 @@ public struct TaskLoader {
   
   private static func tasksFromData(data: NSData) -> [Task]? {
     let error = NSErrorPointer()
-    if let arrayOfTaskDictionaries = NSJSONSerialization.JSONObjectWithData(data, options: []) as? [NSDictionary] {
+	var arrayOfTaskDictionaries: [NSDictionary]?
+	do {
+		arrayOfTaskDictionaries = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [NSDictionary]
+	} catch {
+		
+	}
+    if let arrayOfTaskDictionaries = arrayOfTaskDictionaries {
       return Task.tasksFromArrayOfJSONDictionaries(arrayOfTaskDictionaries)
     } else {
       NSLog("Error loading data: " + error.debugDescription)
